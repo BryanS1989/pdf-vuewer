@@ -1,5 +1,5 @@
 <script setup></script>
 
 <template>
-    <p>Hello</p>
+    <h2>PDF Document</h2>
 </template>
