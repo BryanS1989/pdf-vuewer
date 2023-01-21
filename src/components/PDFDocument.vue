@@ -15,6 +15,7 @@ export default {
     props: {
         url: String,
         scale: Number,
+        currentPage: Number,
     },
 
     data() {
@@ -40,20 +41,20 @@ export default {
 
             this.pages = [];
 
-            const promises = range(1, this.numPages + 1).map((number) => {
-                // INFO: Use toRaw because pdf is a Proxy, with toRaw we get:
-                // pdf  --> PDFDocumentProxy
-                return toRaw(pdf).getPage(number);
-            });
-
-            Promise.all(promises)
-                .then((pages) => {
-                    // pages    --> PDFPageProxy[]
-                    this.pages = pages;
-                })
-                .catch((err) => console.log(err));
+            if (this.currentPage === undefined) {
+                this.loadPDFComplete();
+            } else {
+                this.loadPDFPage();
+            }
+        },
+        currentPage() {
+            console.log('[PDFDocument] [watch] [currentPage()]');
+            if (this.currentPage !== undefined) {
+                this.loadPDFPage();
+            }
         },
         url() {
+            console.log('[PDFDocument] [watch] [url()]');
             this.fetchPDF();
         },
     },
@@ -71,19 +72,51 @@ export default {
                 })
                 .catch((err) => console.log(err));
         },
+        loadPDFComplete() {
+            console.log('[PDFDocument] [loadPDFComplete()]');
+
+            const promises = range(1, this.numPages + 1).map((number) => {
+                // INFO: Use toRaw because pdf is a Proxy, with toRaw we get:
+                // pdf  --> PDFDocumentProxy
+                return toRaw(this.pdf).getPage(number);
+            });
+
+            Promise.all(promises)
+                .then((pages) => {
+                    // pages    --> PDFPageProxy[]
+                    this.pages = pages;
+                })
+                .catch((err) => console.log(err));
+        },
+        loadPDFPage() {
+            console.log('[PDFDocument] [loadPDFPage()]');
+
+            let pageAux = this.currentPage;
+
+            if (this.currentPage < 0) pageAux = 1;
+            if (this.currentPage > this.numPages) pageAux = this.numPages;
+
+            // INFO: Use toRaw because pdf is a Proxy, with toRaw we get:
+            // pdf  --> PDFDocumentProxy
+            const pdfPagePromise = toRaw(this.pdf).getPage(pageAux);
+
+            pdfPagePromise
+                .then((pages) => {
+                    // pages    --> PDFPageProxy[]
+                    this.pages = [pages];
+                })
+                .catch((err) => console.log(err));
+        },
     },
 };
 </script>
 
 <template>
-    <h2>PDF Document</h2>
-    <div class="pdf-document">
-        <PDFPage
-            v-for="page in pages"
-            :key="page.pageNumber"
-            :page="page"
-            :scale="scale"
-            :pageNumber="page.pageNumber"
-        />
-    </div>
+    <PDFPage
+        v-for="page in pages"
+        :key="page.pageNumber"
+        :page="page"
+        :scale="scale"
+        :pageNumber="page.pageNumber"
+    />
 </template>
