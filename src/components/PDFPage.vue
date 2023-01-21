@@ -119,7 +119,7 @@ export default {
     beforeUnmount() {
         console.log('[PDFPage] [beforeUnmount()]');
 
-        this.destroyPage(this.page);
+        //this.destroyPage(this.page);
     },
 
     render() {
