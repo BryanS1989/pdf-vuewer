@@ -43,7 +43,6 @@ export default {
             this.pages = [];
 
             this.numPages = pdf.numPages;
-            this.$emit('numPages', this.numPages);
 
             if (this.currentPage === undefined) {
                 this.loadPDFComplete();
@@ -51,6 +50,15 @@ export default {
                 this.loadPDFPage();
             }
         },
+
+        numPages() {
+            console.log(
+                '[PDFDocument] [watch] [numPages()] numPages: ',
+                this.numPages
+            );
+            this.$emit('numPages', this.numPages);
+        },
+
         currentPage() {
             console.log('[PDFDocument] [watch] [currentPage()]');
             if (this.currentPage !== undefined) {
