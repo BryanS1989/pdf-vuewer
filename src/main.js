@@ -14,10 +14,17 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
     faChevronLeft,
     faChevronRight,
+    faMagnifyingGlassPlus,
+    faMagnifyingGlassMinus,
 } from '@fortawesome/free-solid-svg-icons';
 
 /* add icons to the library */
-library.add(faChevronLeft, faChevronRight);
+library.add(
+    faChevronLeft,
+    faChevronRight,
+    faMagnifyingGlassPlus,
+    faMagnifyingGlassMinus
+);
 
 const app = createApp(App);
 
