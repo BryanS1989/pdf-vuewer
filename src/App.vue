@@ -8,6 +8,7 @@ export default {
         return {
             url: 'https://cdn.filestackcontent.com/5qOCEpKzQldoRsVatUPS',
             file: undefined,
+            base64: undefined,
             scale: 1,
             page: 1,
             numPages: 1,
@@ -26,8 +27,10 @@ export default {
                 return URL.createObjectURL(this.file);
             } else if (this.url !== undefined) {
                 return this.url;
+            } else if (this.base64 !== undefined) {
+                return { data: atob(this.base64) };
             } else {
-                return '';
+                return 'https://cdn.filestackcontent.com/5qOCEpKzQldoRsVatUPS';
             }
         },
 
@@ -50,27 +53,32 @@ export default {
 
             this.file = files[0];
             this.$refs['fileInput'].value = '';
-            this.page = 1;
 
             this.url = undefined;
+            this.base64 = undefined;
+            this.page = 1;
         },
 
         onUrlChange(event) {
             console.log('[APP] [onUrlChange()] event:', event);
             this.file = undefined;
+            this.base64 = undefined;
+            this.page = 1;
+        },
+
+        onBase64Change(event) {
+            console.log('[APP] [onUrlChange()] event:', event);
+            this.file = undefined;
+            this.url = undefined;
             this.page = 1;
         },
 
         checkPage() {
             console.log('[APP] [checkPage()]');
-            if (this.page !== undefined) {
-                if (this.page <= 1) {
-                    this.page = 1;
-                } else if (this.page >= this.numPages) {
-                    this.page = this.numPages;
-                }
-            } else {
-                this.page = 'all';
+            if (this.page <= 1) {
+                this.page = 1;
+            } else if (this.page >= this.numPages) {
+                this.page = this.numPages;
             }
         },
 
@@ -81,7 +89,7 @@ export default {
 
         previousPage() {
             console.log('[APP] [previousPage()]');
-            if (this.page === undefined || this.page <= 1) {
+            if (this.page <= 1) {
                 this.page = 1;
             } else {
                 this.page -= 1;
@@ -90,9 +98,7 @@ export default {
 
         nextPage() {
             console.log('[APP] [nextPage()]');
-            if (this.page === undefined) {
-                this.page = 1;
-            } else if (this.page >= this.numPages) {
+            if (this.page >= this.numPages) {
                 this.page = this.numPages;
             } else {
                 this.page += 1;
@@ -161,6 +167,18 @@ export default {
                         @change="onUrlChange($event)"
                     />
                 </label>
+                <label class="flex justify-left cursor_pointer">
+                    <font-awesome-icon
+                        icon="fa-solid fa-file-code"
+                        class="fa-xl"
+                    />
+                    <input
+                        type="text"
+                        v-model="base64"
+                        placeholder="Base64"
+                        @change="onBase64Change($event)"
+                    />
+                </label>
             </div>
 
             <div class="flex">
@@ -219,7 +237,7 @@ export default {
     </header>
     <main class="flex flex-col overflow--auto">
         <PDFDocument
-            :url="src"
+            :src="src"
             :scale="theScale"
             :currentPage="page"
             @num-pages="(pages) => (this.numPages = pages)"
