@@ -71,7 +71,13 @@ export default {
 
 <template>
     <header class="">
-        <h1>PDF Vuewer</h1>
+        <h1 class="flex justify-left">
+            <font-awesome-icon
+                icon="fa-solid fa-file-pdf"
+                class="fa-xl"
+            />
+            PDF Vuewer
+        </h1>
 
         <div class="flex flex-grow-1">
             <label class="flex cursor_pointer">
@@ -79,7 +85,6 @@ export default {
                     icon="fa-solid fa-file-arrow-up"
                     class="fa-xl"
                 />
-                <h2>Upload File</h2>
                 <input
                     type="file"
                     accept="application/pdf"
