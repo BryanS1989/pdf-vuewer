@@ -40,6 +40,16 @@ export default {
     watch: {
         pdf(pdf) {
             console.log('[PDFDocument] [watch] [pdf()] pdf: ', pdf);
+            this.pages = [];
+
+            this.numPages = pdf.numPages;
+            this.$emit('numPages', this.numPages);
+
+            if (this.currentPage === undefined) {
+                this.loadPDFComplete();
+            } else {
+                this.loadPDFPage();
+            }
         },
         currentPage() {
             console.log('[PDFDocument] [watch] [currentPage()]');
@@ -71,16 +81,6 @@ export default {
             loadingTask.promise
                 .then((pdf) => {
                     this.pdf = pdf;
-                    this.pages = [];
-
-                    this.numPages = pdf.numPages;
-                    this.$emit('numPages', this.numPages);
-
-                    if (this.currentPage === undefined) {
-                        this.loadPDFComplete();
-                    } else {
-                        this.loadPDFPage();
-                    }
                 })
                 .catch((err) => console.log(err));
         },
