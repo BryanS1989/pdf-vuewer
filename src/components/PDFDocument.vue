@@ -3,7 +3,7 @@ import { toRaw } from 'vue';
 import range from 'lodash/range';
 import * as pdfjs from 'pdfjs-dist/build/pdf';
 
-import PDFPage from './PDFpage.vue';
+import PDFPage from './PDFPage.vue';
 
 export default {
     name: 'PDFDocument',
