@@ -26,6 +26,14 @@
     justify-content: space-between;
 }
 
+.align-left {
+    align-items: flex-start;
+}
+
+.align-end {
+    align-items: flex-end;
+}
+
 .flex-grow-1 {
     flex-grow: 1;
 }
@@ -39,8 +47,27 @@
 }
 
 @media (hover: hover) {
-    :is(label, button):hover {
+    :is(label, input, button):hover {
         color: var(--color-hover);
+    }
+
+    input:hover::placeholder {
+        color: var(--color-hover);
+    }
+
+    input:hover {
+        border-color: var(--color-hover);
+    }
+}
+
+@media (max-width: 425px) {
+    .inputs,
+    .menu {
+        flex-flow: column nowrap;
+    }
+
+    .menu {
+        padding-bottom: 0.5rem;
     }
 }
 
