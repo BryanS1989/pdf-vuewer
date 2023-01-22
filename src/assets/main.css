@@ -30,8 +30,12 @@
     overflow: auto;
 }
 
+.cursor_pointer {
+    cursor: pointer;
+}
+
 @media (hover: hover) {
-    button:hover {
+    :is(label, button):hover {
         color: var(--color-hover);
     }
 }
