@@ -18,11 +18,22 @@
     flex-flow: column nowrap;
 }
 
+.justify-between {
+    justify-content: space-between;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+}
+
 .overflow--auto {
     overflow: auto;
 }
 
 @media (hover: hover) {
+    button:hover {
+        color: var(--color-hover);
+    }
 }
 
 @media (min-width: 1024px) {
