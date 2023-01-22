@@ -7,20 +7,62 @@ export default {
     data() {
         return {
             url: 'https://cdn.filestackcontent.com/5qOCEpKzQldoRsVatUPS',
+            file: undefined,
             scale: 1,
-            page: undefined,
+            page: 1,
             numPages: 1,
         };
     },
 
     computed: {
         theScale() {
+            console.log('[APP] [computed] [theScale]');
             return +this.scale.toFixed(2);
+        },
+
+        src() {
+            console.log('[APP] [computed] [src]');
+            if (this.file !== undefined) {
+                return URL.createObjectURL(this.file);
+            } else if (this.url !== undefined) {
+                return this.url;
+            } else {
+                return '';
+            }
+        },
+
+        fileName() {
+            console.log('[APP] [computed] [fileName]');
+            if (this.file !== undefined) {
+                return this.file.name;
+            } else {
+                return 'Choose a PDF';
+            }
         },
     },
 
     methods: {
+        onFileChange(event) {
+            console.log('[APP] [onFileChange()] event:', event);
+            var files = event.target.files || event.dataTransfer.files;
+
+            if (!files.length) return;
+
+            this.file = files[0];
+            this.$refs['fileInput'].value = '';
+            this.page = 1;
+
+            this.url = undefined;
+        },
+
+        onUrlChange(event) {
+            console.log('[APP] [onUrlChange()] event:', event);
+            this.file = undefined;
+            this.page = 1;
+        },
+
         checkPage() {
+            console.log('[APP] [checkPage()]');
             if (this.page !== undefined) {
                 if (this.page <= 1) {
                     this.page = 1;
@@ -30,6 +72,11 @@ export default {
             } else {
                 this.page = 'all';
             }
+        },
+
+        firstPage() {
+            console.log('[APP] [firstPage()]');
+            this.page = 1;
         },
 
         previousPage() {
@@ -50,6 +97,11 @@ export default {
             } else {
                 this.page += 1;
             }
+        },
+
+        lastPage() {
+            console.log('[APP] [lastPage()]');
+            this.page = this.numPages;
         },
 
         zoomOut() {
@@ -74,67 +126,100 @@ export default {
         <h1 class="flex justify-left">
             <font-awesome-icon
                 icon="fa-solid fa-file-pdf"
-                class="fa-xl"
+                class="fa-l"
             />
             PDF Vuewer
         </h1>
 
-        <div class="flex flex-grow-1">
-            <label class="flex cursor_pointer">
-                <font-awesome-icon
-                    icon="fa-solid fa-file-arrow-up"
-                    class="fa-xl"
-                />
-                <input
-                    type="file"
-                    accept="application/pdf"
-                    hidden
-                />
-            </label>
+        <hr />
 
-            <nav class="flex flex-grow-1">
-                <button @click="previousPage()">
+        <div class="menu flex justify-between flex-grow-1">
+            <div class="inputs flex align-left">
+                <label class="file-uploader flex justify-left cursor_pointer">
                     <font-awesome-icon
-                        icon="fa-solid fa-chevron-left"
+                        icon="fa-solid fa-file-arrow-up"
                         class="fa-xl"
                     />
-                </button>
-                <input
-                    type="number"
-                    v-model="page"
-                    @keyup="checkPage()"
-                    min="1"
-                    :max="numPages"
-                    :placeholder="page === undefined ? 'ALL' : ''"
-                />
-                <button @click="nextPage()">
+                    <p>{{ fileName }}</p>
+                    <input
+                        type="file"
+                        @change="onFileChange($event)"
+                        accept="application/pdf"
+                        hidden
+                        ref="fileInput"
+                    />
+                </label>
+                <label class="flex justify-left cursor_pointer">
                     <font-awesome-icon
-                        icon="fa-solid fa-chevron-right"
+                        icon="fa-solid fa-link"
                         class="fa-xl"
                     />
-                </button>
-            </nav>
+                    <input
+                        type="url"
+                        v-model="url"
+                        placeholder="https://www..."
+                        @change="onUrlChange($event)"
+                    />
+                </label>
+            </div>
 
             <div class="flex">
-                <button @click="zoomOut()">
-                    <font-awesome-icon
-                        icon="fa-solid fa-magnifying-glass-minus"
-                        class="fa-xl"
+                <nav class="flex flex-grow-1">
+                    <button @click="firstPage()">
+                        <font-awesome-icon
+                            icon="fa-solid fa-angles-left"
+                            class="fa-xl"
+                        />
+                    </button>
+                    <button @click="previousPage()">
+                        <font-awesome-icon
+                            icon="fa-solid fa-chevron-left"
+                            class="fa-xl"
+                        />
+                    </button>
+                    <input
+                        type="number"
+                        v-model="page"
+                        @keyup="checkPage()"
+                        min="1"
+                        :max="numPages"
+                        :placeholder="page === undefined ? 'ALL' : ''"
                     />
-                </button>
-                <button @click="zoomIn()">
-                    <font-awesome-icon
-                        icon="fa-solid fa-magnifying-glass-plus"
-                        class="fa-xl"
-                    />
-                </button>
+                    <button @click="nextPage()">
+                        <font-awesome-icon
+                            icon="fa-solid fa-chevron-right"
+                            class="fa-xl"
+                        />
+                    </button>
+                    <button @click="lastPage()">
+                        <font-awesome-icon
+                            icon="fa-solid fa-angles-right"
+                            class="fa-xl"
+                        />
+                    </button>
+                </nav>
+
+                <div class="flex">
+                    <button @click="zoomOut()">
+                        <font-awesome-icon
+                            icon="fa-solid fa-magnifying-glass-minus"
+                            class="fa-xl"
+                        />
+                    </button>
+                    <button @click="zoomIn()">
+                        <font-awesome-icon
+                            icon="fa-solid fa-magnifying-glass-plus"
+                            class="fa-xl"
+                        />
+                    </button>
+                </div>
             </div>
         </div>
+        <hr />
     </header>
-    <hr />
     <main class="flex flex-col overflow--auto">
         <PDFDocument
-            :url="url"
+            :url="src"
             :scale="theScale"
             :currentPage="page"
             @num-pages="(pages) => (this.numPages = pages)"
@@ -143,8 +228,9 @@ export default {
 </template>
 
 <style>
-header {
-    padding: 1rem 0;
+h1 {
+    padding: 1.5rem;
+    font-size: 2.5rem;
 }
 
 main {
@@ -195,5 +281,8 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type='number'] {
     -moz-appearance: textfield;
+}
+
+.inputs {
 }
 </style>
