@@ -13,7 +13,7 @@ export default {
     },
 
     props: {
-        url: String,
+        src: String || Object,
         scale: Number,
         currentPage: Number,
     },
@@ -63,8 +63,9 @@ export default {
                 this.loadPDFPage();
             }
         },
-        url() {
-            console.log('[PDFDocument] [watch] [url()]');
+        src() {
+            console.log('[PDFDocument] [watch] [src()]');
+
             this.fetchPDF();
         },
     },
@@ -73,7 +74,7 @@ export default {
         fetchPDF() {
             console.log('[PDFDocument] [fetchPDF()]');
 
-            var loadingTask = pdfjs.getDocument(this.url);
+            var loadingTask = pdfjs.getDocument(this.src);
 
             loadingTask.promise
                 .then((pdf) => {
