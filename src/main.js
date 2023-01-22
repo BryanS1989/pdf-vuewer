@@ -21,6 +21,7 @@ import {
     faLink,
     faAnglesLeft,
     faAnglesRight,
+    faFileCode,
 } from '@fortawesome/free-solid-svg-icons';
 
 /* add icons to the library */
@@ -33,7 +34,8 @@ library.add(
     faMagnifyingGlassMinus,
     faFileArrowUp,
     faFilePdf,
-    faLink
+    faLink,
+    faFileCode
 );
 
 const app = createApp(App);
