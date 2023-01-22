@@ -142,11 +142,11 @@ export default {
             PDF Vuewer
         </h1>
 
-        <hr />
-
-        <div class="menu flex justify-between flex-grow-1">
-            <div class="inputs flex align-left">
-                <label class="file-uploader flex justify-left cursor_pointer">
+        <div class="menu">
+            <div class="inputs flex">
+                <label
+                    class="file-uploader flex justify-center flex-grow-1 cursor_pointer"
+                >
                     <font-awesome-icon
                         icon="fa-solid fa-file-arrow-up"
                         class="fa-xl"
@@ -160,7 +160,7 @@ export default {
                         ref="fileInput"
                     />
                 </label>
-                <label class="flex justify-left cursor_pointer">
+                <label class="flex justify-center flex-grow-1 cursor_pointer">
                     <font-awesome-icon
                         icon="fa-solid fa-link"
                         class="fa-xl"
@@ -172,7 +172,7 @@ export default {
                         @change="onUrlChange($event)"
                     />
                 </label>
-                <label class="flex justify-left cursor_pointer">
+                <label class="flex justify-center flex-grow-1 cursor_pointer">
                     <font-awesome-icon
                         icon="fa-solid fa-file-code"
                         class="fa-xl"
@@ -186,8 +186,10 @@ export default {
                 </label>
             </div>
 
-            <div class="flex">
-                <nav class="flex flex-grow-1">
+            <hr />
+
+            <div class="options flex justify-right p-05">
+                <nav class="flex flex-grow-1 justify-center">
                     <button @click="firstPage()">
                         <font-awesome-icon
                             icon="fa-solid fa-angles-left"
