@@ -84,24 +84,7 @@ export default {
                 })
                 .catch((err) => {
                     console.log('RenderTask Error: ', err);
-                    this.destroyRenderTask();
                 });
-        },
-
-        destroyPage(page) {
-            if (!page) return;
-
-            page._destroy();
-
-            if (this.renderTask) this.renderTask.cancel();
-        },
-
-        destroyRenderTask() {
-            if (!this.renderTask) return;
-
-            this.renderTask.cancel();
-
-            delete this.renderTask;
         },
     },
 
@@ -116,19 +99,17 @@ export default {
 
         this.drawPage();
     },
-
-    beforeUnmount() {
-        console.log('[PDFPage] [beforeUnmount()]');
-
-        //this.destroyPage(this.page);
-    },
-
-    render() {
-        const { canvasAttrs: attrs } = this;
-        return h('canvas', attrs);
-    },
 };
 </script>
+
+<template>
+    <canvas
+        :id="canvasAttrs.id"
+        :width="canvasAttrs.width"
+        :height="canvasAttrs.height"
+        style="canvasAttrs.style"
+    ></canvas>
+</template>
 
 <style>
 .pdf-page {
