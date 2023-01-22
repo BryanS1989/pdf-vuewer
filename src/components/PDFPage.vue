@@ -31,10 +31,11 @@ export default {
             const style = this.canvasStyle;
 
             return {
+                id: `page-number-${this.pageNumber}`,
                 width,
                 height,
                 style,
-                class: 'pdf-page',
+                class: '',
             };
         },
 
