@@ -17,6 +17,7 @@ import {
     faMagnifyingGlassPlus,
     faMagnifyingGlassMinus,
     faFileArrowUp,
+    faFilePdf,
 } from '@fortawesome/free-solid-svg-icons';
 
 /* add icons to the library */
@@ -25,7 +26,8 @@ library.add(
     faChevronRight,
     faMagnifyingGlassPlus,
     faMagnifyingGlassMinus,
-    faFileArrowUp
+    faFileArrowUp,
+    faFilePdf
 );
 
 const app = createApp(App);
