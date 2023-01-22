@@ -18,6 +18,8 @@ export default {
         currentPage: Number,
     },
 
+    emits: ['numPages'],
+
     data() {
         return {
             pdf: undefined,
@@ -53,6 +55,14 @@ export default {
                 this.loadPDFPage();
             }
         },
+        scale() {
+            console.log('[PDFDocument] [watch] [scale()]');
+            if (this.currentPage === undefined) {
+                this.loadPDFComplete();
+            } else {
+                this.loadPDFPage();
+            }
+        },
         url() {
             console.log('[PDFDocument] [watch] [url()]');
             this.fetchPDF();
@@ -69,6 +79,7 @@ export default {
                 .then((pdf) => {
                     this.pdf = pdf;
                     this.numPages = pdf.numPages;
+                    this.$emit('numPages', this.numPages);
                 })
                 .catch((err) => console.log(err));
         },
@@ -93,7 +104,7 @@ export default {
 
             let pageAux = this.currentPage;
 
-            if (this.currentPage < 0) pageAux = 1;
+            if (this.currentPage < 1) pageAux = 1;
             if (this.currentPage > this.numPages) pageAux = this.numPages;
 
             // INFO: Use toRaw because pdf is a Proxy, with toRaw we get:
@@ -114,7 +125,7 @@ export default {
 <template>
     <PDFPage
         v-for="page in pages"
-        :key="page.pageNumber"
+        :key="`${page.pageNumber}-${scale}`"
         :page="page"
         :scale="scale"
         :pageNumber="page.pageNumber"
