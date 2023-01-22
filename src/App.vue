@@ -45,6 +45,11 @@ export default {
     },
 
     methods: {
+        setNumPages(numPages) {
+            console.log('[APP] [setNumPages()] numPages:', numPages);
+            this.numPages = numPages;
+        },
+
         onFileChange(event) {
             console.log('[APP] [onFileChange()] event:', event);
             var files = event.target.files || event.dataTransfer.files;
@@ -240,7 +245,7 @@ export default {
             :src="src"
             :scale="theScale"
             :currentPage="page"
-            @num-pages="(pages) => (this.numPages = pages)"
+            @num-pages="setNumPages(pages)"
         />
     </main>
 </template>
