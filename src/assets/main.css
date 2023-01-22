@@ -18,6 +18,10 @@
     flex-flow: column nowrap;
 }
 
+.justify-left {
+    justify-content: left;
+}
+
 .justify-between {
     justify-content: space-between;
 }
