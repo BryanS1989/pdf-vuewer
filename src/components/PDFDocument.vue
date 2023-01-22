@@ -43,6 +43,9 @@ export default {
 
             this.pages = [];
 
+            this.numPages = pdf.numPages;
+            this.$emit('numPages', this.numPages);
+
             if (this.currentPage === undefined) {
                 this.loadPDFComplete();
             } else {
@@ -79,8 +82,6 @@ export default {
             loadingTask.promise
                 .then((pdf) => {
                     this.pdf = pdf;
-                    this.numPages = pdf.numPages;
-                    this.$emit('numPages', this.numPages);
                 })
                 .catch((err) => console.log(err));
         },
