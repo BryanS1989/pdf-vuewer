@@ -32,7 +32,7 @@ export default {
         console.log('[PDFDocument] [created()]');
 
         pdfjs.GlobalWorkerOptions.workerSrc =
-            '../../node_modules/pdfjs-dist/build/pdf.worker.min.js';
+            '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
         this.fetchPDF();
     },
