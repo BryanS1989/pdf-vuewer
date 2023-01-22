@@ -247,7 +247,7 @@ export default {
             :src="src"
             :scale="theScale"
             :currentPage="page"
-            @num-pages="setNumPages(numPages)"
+            @num-pages="setNumPages"
         />
     </main>
 </template>
