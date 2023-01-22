@@ -31,8 +31,8 @@ export default {
     created() {
         console.log('[PDFDocument] [created()]');
 
-        pdfjs.GlobalWorkerOptions.workerSrc =
-            '../../node_modules/pdfjs-dist/build/pdf.worker.js';
+        pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+        // '../../node_modules/pdfjs-dist/build/pdf.worker.js';
 
         this.fetchPDF();
     },
